@@ -3,6 +3,7 @@ package com.example.miscellaneous.controller;
 import com.example.miscellaneous.model.Song;
 import com.example.miscellaneous.repository.SongRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -11,26 +12,28 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.Optional;
 
 @RestController
 public class SongController {
+    @Value("${upload.path}")
+    private String uploadPath;
     @Autowired
     private SongRepository songRepository;
 
     @PostMapping("/upload")
     public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file,
                                                    @RequestParam("title") String title,
-                                                   @RequestParam("artist") String artist) {
+                                                   @RequestParam("artist") String artist) throws IOException {
         // Save the file to a storage location and save the song details to the database
+        String filePath = uploadPath + File.separator + file.getOriginalFilename();
+        saveFile(file, filePath);
         // Don't forget to set the file path in the Song entity
         Song song = new Song();
         song.setTitle(title);
         song.setArtist(artist);
-        song.setFilePath("/path/to/your/storage/" + file.getOriginalFilename());
+        song.setFilePath("D:/" + file.getOriginalFilename());
         songRepository.save(song);
 
         return ResponseEntity.ok("Song uploaded successfully!");
@@ -58,6 +61,12 @@ public class SongController {
             }
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+    private void saveFile(MultipartFile file, String filePath) throws IOException {
+        // Tạo một luồng đầu ra để lưu file
+        try (OutputStream os = new FileOutputStream(filePath)) {
+            os.write(file.getBytes());
         }
     }
 }
