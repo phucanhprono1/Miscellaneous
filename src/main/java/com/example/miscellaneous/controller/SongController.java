@@ -33,10 +33,14 @@ public class SongController {
         Song song = new Song();
         song.setTitle(title);
         song.setArtist(artist);
-        song.setFilePath("D:/" + file.getOriginalFilename());
+        song.setFilePath(uploadPath + file.getOriginalFilename());
         songRepository.save(song);
 
         return ResponseEntity.ok("Song uploaded successfully!");
+    }
+    @GetMapping("allSongs")
+    public ResponseEntity<?> getAllSongs(){
+        return ResponseEntity.ok(songRepository.findAll());
     }
     @GetMapping("/stream/{id}")
     public ResponseEntity<InputStreamResource> streamSong(@PathVariable Long id) {
