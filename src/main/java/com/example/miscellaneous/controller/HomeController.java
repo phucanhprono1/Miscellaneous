@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 public class HomeController {
     @GetMapping("")
     public String hello(){
-        return "<div><p>hello world</p></div><p>hello world</p>";
+        return "<div><h1>hello world</h1></div><p>hello world</p>";
     }
 
 }

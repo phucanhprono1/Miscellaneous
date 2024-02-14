@@ -5,14 +5,11 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "tbl_playlist")
-public class Playlist {
+@Table(name = "tbl_genre")
+public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 }
