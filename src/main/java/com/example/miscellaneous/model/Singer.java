@@ -23,4 +23,10 @@ public class Singer {
             joinColumns = @JoinColumn(name = "tbl_singer_id"),
             inverseJoinColumns = @JoinColumn(name = "tbl_song_id"))
     private List<Song> songs;
+    @ManyToMany
+    @JoinTable(
+            name = "tbl_singer_genre",
+            joinColumns = @JoinColumn(name = "tbl_singer_id"),
+            inverseJoinColumns = @JoinColumn(name = "tbl_genre_id"))
+    private List<Genre> genres;
 }
