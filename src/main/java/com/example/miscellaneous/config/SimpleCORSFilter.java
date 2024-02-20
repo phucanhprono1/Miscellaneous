@@ -25,6 +25,7 @@ public class SimpleCORSFilter implements Filter {
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, Content-Length, X-Requested-With, ngrok-skip-browser-warning");
         response.setHeader("Access-Control-Allow-Credentials", "true");
+//        response.setContentLength(10 * 1024 * 1024);
         if (!"OPTIONS".equalsIgnoreCase(request.getMethod())) {
             chain.doFilter(req, res);
         } else {
