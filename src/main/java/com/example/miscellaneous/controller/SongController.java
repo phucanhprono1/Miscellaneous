@@ -2,6 +2,7 @@ package com.example.miscellaneous.controller;
 
 import com.example.miscellaneous.model.Song;
 import com.example.miscellaneous.repository.SongRepository;
+import com.example.miscellaneous.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 @RestController
@@ -21,6 +24,8 @@ public class SongController {
     private String uploadPath;
     @Autowired
     private SongRepository songRepository;
+    @Autowired
+    private SongService songService;
 
     @PostMapping("/upload")
     public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file,
@@ -52,7 +57,8 @@ public class SongController {
                 InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
 
                 HttpHeaders headers = new HttpHeaders();
-                headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName());
+                String fileName = URLEncoder.encode(file.getName(), StandardCharsets.UTF_8.toString());
+                headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
 
                 return ResponseEntity.ok()
                         .headers(headers)
