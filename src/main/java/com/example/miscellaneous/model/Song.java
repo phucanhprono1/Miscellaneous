@@ -3,6 +3,10 @@ package com.example.miscellaneous.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigInteger;
+import java.time.LocalDateTime;
+import java.util.Date;
+
 @Entity
 @Table(name = "tbl_song")
 @Data
@@ -15,13 +19,10 @@ public class Song {
     private String genre;
     private String releaseDate;
     private String language;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tbl_album_id")
-    private Album album; // Album to which the song belongs
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tbl_playlist_id")
-    private Playlist playlist; // Playlist to which the song belongs
     private String filePath; // Path to the stored audio file
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private BigInteger viewsCount;
 
     // Getters and setters
 }

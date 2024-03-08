@@ -2,6 +2,7 @@ package com.example.miscellaneous.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.miscellaneous.model.Singer;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class SingerService {
+    @Autowired
     private  SingerRepository singerRepository;
     public void addSinger(Singer singer) {
         singerRepository.save(singer);

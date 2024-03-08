@@ -29,4 +29,5 @@ public class Singer {
             joinColumns = @JoinColumn(name = "tbl_singer_id"),
             inverseJoinColumns = @JoinColumn(name = "tbl_genre_id"))
     private List<Genre> genres;
+
 }

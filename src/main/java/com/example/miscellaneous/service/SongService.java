@@ -21,9 +21,11 @@ public class SongService {
     public Song getSongById(Long id){
         return songRepository.findById(id).orElse(null);
     }
-    public Song saveSong(Song song, MultipartFile file) throws IOException {
+    public String saveSong(Song song, MultipartFile file) throws IOException {
+
         saveFile(file,song.getFilePath());
-        return songRepository.save(song);
+        songRepository.save(song);
+        return "Song uploaded successfully!";
     }
     private void saveFile(MultipartFile file, String filePath) throws IOException {
         // Tạo một luồng đầu ra để lưu file
