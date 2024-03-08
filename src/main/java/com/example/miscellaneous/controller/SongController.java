@@ -1,8 +1,10 @@
 package com.example.miscellaneous.controller;
 
+import com.example.miscellaneous.dto.SongDto;
 import com.example.miscellaneous.model.Song;
 import com.example.miscellaneous.repository.SongRepository;
 import com.example.miscellaneous.service.SongService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
@@ -10,13 +12,16 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.Optional;
+
 
 @RestController
 public class SongController {
@@ -30,7 +35,7 @@ public class SongController {
     @PostMapping("/upload")
     public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file,
                                                    @RequestParam("title") String title,
-                                                   @RequestParam("artist") String artist) throws IOException {
+                                                   @RequestParam("artist") String artist,@Valid @RequestBody  SongDto songDto) throws IOException {
         // Save the file to a storage location and save the song details to the database
         String filePath = uploadPath + File.separator + file.getOriginalFilename();
         saveFile(file, filePath);
@@ -39,11 +44,13 @@ public class SongController {
         song.setTitle(title);
         song.setArtist(artist);
         song.setFilePath(uploadPath + file.getOriginalFilename());
-        songRepository.save(song);
-
+        song.setGenre(songDto.getGenre());
+        song.setCreatedAt(LocalDateTime.now());
+//        songRepository.save(song);
+        songService.saveSong(song, file);
         return ResponseEntity.ok("Song uploaded successfully!");
     }
-    @GetMapping("allSongs")
+    @GetMapping("/allSongs")
     public ResponseEntity<?> getAllSongs(){
         return ResponseEntity.ok(songRepository.findAll());
     }

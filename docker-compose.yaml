@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  mscsapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: miscellaneous
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://192.168.0.123:3306/miscellaneous
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Ducanh@0312

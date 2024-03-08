@@ -3,6 +3,7 @@ package com.example.miscellaneous.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -23,9 +24,12 @@ public class Album {
     private String type;
     @ManyToMany
     @JoinTable(
-            name = "tbl_album_genre",
+            name = "tbl_album_song",
             joinColumns = @JoinColumn(name = "tbl_album_id"),
-            inverseJoinColumns = @JoinColumn(name = "tbl_genre_id"))
-    private List<Genre> genres;
+            inverseJoinColumns = @JoinColumn(name = "tbl_song_id"))
+    private List<Song> songs;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private Long viewsCount;
 
 }
